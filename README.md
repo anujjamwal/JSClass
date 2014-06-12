@@ -30,7 +30,7 @@ Person.prototype.name = function() {
 	return this.fname + " " + this.lname;
 }
 
-var PersonClass = Class.fromClass(Person);
+var PersonClass = Class.fromClass(Person, 'Person');
 var object = PersonClass.new();
 object.name()               // 'James Bond'
 ```
