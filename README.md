@@ -19,6 +19,21 @@ Every class has a name attribute set to the name passed while creating class
 ```js
 Person.name     // 'Person'
 ```
+Create class form js constructor
+```js
+function Person() {
+	this.fname = 'James';
+	this.lname = 'Bond';
+}
+
+Person.prototype.name = function() {
+	return this.fname + " " + this.lname;
+}
+
+var PersonClass = Class.fromClass(Person);
+var object = PersonClass.new();
+object.name()               // 'James Bond'
+```
 
 #### Instantiating
 

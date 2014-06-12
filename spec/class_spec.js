@@ -145,7 +145,6 @@ it('should call init for classes that supply one', function() {
   assert(object.get('fullName') == 'Anuj Jamwal', 'object should have property fullName with value Anuj Jamwal')
 });
 
-
 it('should allow inheriting from another class', function() {
 	var BaseClass = new Class('BaseClass', {
 		method: function() {
@@ -169,4 +168,70 @@ it('should allow inheriting from another class', function() {
 	assert(object.super.method() == 'BaseClass', 'super must have the method from base class')
 	assert(object.method2() == 'Child', 'override method from base class');
 	assert(object.super.method2() == 'Base', 'access super class method using super');
+});
+
+it('should run init for base class', function() {
+	var BaseClass = new Class('BaseClass', {
+		init: function() {
+			this.set('age', 23);
+		},
+		method: function() {
+			return this.get('age')
+		}
+	}),
+	Klass = new Class('Klass', {
+		EXTENDS: BaseClass
+	});
+	
+	var object = Klass.new({name: 'Anuj Jamwal'});
+
+	assertEqual(object.method(), 23);
+});
+
+it('should run init for base class before child class', function() {
+	var BaseClass = new Class('BaseClass', {
+		init: function() {
+			this.set('age', 23);
+		},
+		method: function() {
+			return this.get('age')
+		}
+	}),
+	Klass = new Class('Klass', {
+		EXTENDS: BaseClass,
+		init: function() {
+			this.set('age', 33);
+		}
+	});
+	
+	var object = Klass.new({name: 'Anuj Jamwal'});
+
+	assertEqual(object.method(), 33);
+});
+
+it('should allow building Class object from js prototypical class', function() {
+	function Klass() {
+		
+	}
+	Klass.prototype.age = function() {
+		return 23;
+	}
+
+	var KlassJSClass = Class.fromClass(Klass, 'Klass'),
+	ob = KlassJSClass.new();
+	
+	assert(ob.age() == 23, 'age method should be present in object')
+	
+});
+
+it('should invoke constructor for a class via init', function() {
+	function Klass() {
+		this.set('age', 33);
+	}
+
+	var KlassJSClass = Class.fromClass(Klass, 'Klass'),
+	ob = KlassJSClass.new();
+	
+	assert(ob.get('age') == 33, 'age method should be present in object')
+	
 });
