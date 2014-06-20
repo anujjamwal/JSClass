@@ -1,5 +1,8 @@
-function Class(name, definition) {
+function Class(name, definition, staticDefinition) {
   var definition = Class.extend({}, definition);
+  if (staticDefinition && typeof staticDefinition == 'object') {
+	Class.extend(this, staticDefinition);
+  }
 
   if(name == undefined || name == null || typeof name != 'string' || name.length < 1) {
     throw 'First name should be provided in class definition';
@@ -66,6 +69,6 @@ Class.prototype.__methods = {
 	},
 
     toString: function() {
-      return this.class.name + 'object'
+      return this.class.name + ' object'
     }
 };

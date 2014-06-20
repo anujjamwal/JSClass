@@ -48,13 +48,21 @@ compareObjects = function(o1, o2){
 };
 
 function it(name, test) {
+  var elem = document.createElement("li");
+  elem.appendChild(document.createTextNode(name));
+
   try {
     test.apply(this);
+	elem.setAttribute("class", "success")
     console.log("√ Test "+name+ " -- Passed");
   } catch(e) {
+	elem.setAttribute("class", "error");
+	elem.appendChild(document.createElement("br"));
+	elem.appendChild(document.createTextNode(e));
     console.log("x Test "+name+ " -- Failed");
     console.log("    message -> "+e);
   }
+  document.getElementById("tests").appendChild(elem);
 }
 
 
@@ -234,4 +242,13 @@ it('should invoke constructor for a class via init', function() {
 	
 	assert(ob.get('age') == 33, 'age method should be present in object')
 	
+});
+
+it('should allow adding static methods to a class', function() {
+	var Klass = new Class('Klass', {}, {
+		staticMethod: function() {
+			return 'static';
+		}
+	});
+	assert(Klass.staticMethod() == 'static', 'Klass should have staticMethod')
 });
