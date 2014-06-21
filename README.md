@@ -19,6 +19,33 @@ Every class has a name attribute set to the name passed while creating class
 ```js
 Person.name     // 'Person'
 ```
+
+#### Instantiating
+
+Objects can be created using the method new with class Object
+
+```js
+var james = Person.new({fname: 'James'});
+```
+Every Class is supplied with an 'init' method to initialize the object. By default this method sets the values passes new method to attributes hash. The method can be overridden in case different behaviour is required
+```js
+var Person = new Class('Person', {
+    init: function(data) {
+    	this.fname = data.fname;
+    	this.lname = data.lname;
+    },
+    
+    name: function() {
+	return this.fname + " " + this.lname;
+    }
+});
+
+var ob = Person.new({fname: 'James', lname: 'Bond'});
+ob.get('fname');                 // undefined
+ob.fname;                        // 'James'
+ob.name();	                 // 'James Bond'
+```
+
 Create class form js constructor
 ```js
 function Person() {
@@ -33,14 +60,6 @@ Person.prototype.name = function() {
 var PersonClass = Class.fromClass(Person, 'Person');
 var object = PersonClass.new();
 object.name()               // 'James Bond'
-```
-
-#### Instantiating
-
-Objects can be created using the method new with class Object
-
-```js
-var james = Person.new({fname: 'James'});
 ```
 
 #### Getter and Setter
